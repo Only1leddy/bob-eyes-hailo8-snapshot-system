@@ -1,109 +1,133 @@
-# bob-eyes-hailo8-snapshot-system
-Standalone Hailo-based object detection system, detects car and people, saves and flushes folders. 
-Detects people and cars
+🚀 Bob Eyes Hailo8 Snapshot System
 
-Saves snapshots only when movement is detected
+Edge-AI snapshot detection system for Raspberry Pi 5 + Hailo8.
+Detects people and cars, saves intelligent snapshots, and automatically manages storage.
 
-Uses cooldown logic to prevent duplicate images
+Built for long-term unattended RTSP camera monitoring.
 
-Auto-cleans snapshot folders when storage limit is reached
+📸 What This System Does
 
-Designed for RTSP IP cameras
+✅ Detects people and cars
 
-Built on:
+✅ Saves snapshots only when movement is detected
 
-Hailo AI accelerator
+✅ Uses smart cooldown logic to prevent duplicates
 
-GStreamer detection pipeline
+✅ Automatically cleans snapshot folders when storage limits are reached
 
-Hailo RPi examples framework
+✅ Designed for RTSP IP cameras
 
-🏗 Architecture
+✅ Optimised for low CPU overhead
 
-This system consists of two layers:
+🧠 Built On
+
+Hailo8 AI Accelerator
+
+GStreamer Detection Pipeline
+
+Hailo RPi Examples Framework
+
+Python 3.9+
+
+🏗 System Architecture
+
+This project runs as a lightweight two-layer system:
 
 1️⃣ Launcher (Top Layer)
 
-Starts the Hailo detection pipeline
+Responsible for:
 
-Monitors detection output
+Starting the Hailo detection pipeline
 
-Handles trigger cooldown logic
+Feeding the RTSP source
 
+Monitoring detection output
+
+Applying global cooldown logic
+
+Acting as the system entry point
+
+python launcher.py --source "rtsp://YOUR_CAMERA_URL"
 2️⃣ Detection Pipeline (Core Layer)
 
-Runs GStreamer inference pipeline
+Handles:
 
-Uses Hailo detection framework
+Running GStreamer inference
 
-Tracks object movement
+Object detection via Hailo framework
 
-Saves images only when:
+Movement tracking logic
 
-Person detected (with cooldown)
+Snapshot saving
 
-Car moves position significantly
+Folder auto-trimming
 
-Automatically trims snapshot folders when exceeding size limit
+This layer:
 
-📂 Snapshot Storage
+Tracks car positions using bounding box approximation
 
-Images are saved to:
+Filters detections below confidence threshold
 
-/home/leddy/snapshots
-/home/leddy/snapshots_cars
+Avoids duplicate captures from stationary objects
 
-Folder limits:
-
-Max size: 1000 MB
-
-Auto-trims down to: 700 MB
-
-🚀 How To Run
-1️⃣ Activate Hailo environment
-source /home/leddy/hailo-rpi5-examples/setup_env.sh
-2️⃣ Run launcher
-python launcher.py --source "rtsp://YOUR_CAMERA_URL"
-
-Example:
-
-python launcher.py --source "rtsp://192.168.1.50:554/stream"
-⚙️ Detection Behaviour
+🎯 Detection Behaviour
 👤 Person Detection
 
-Cooldown-based trigger
+Triggered when a person is detected
+
+Cooldown-based protection against repeated frames
 
 Saves full-frame snapshot
 
 🚗 Car Detection
 
-Requires 0.9+ confidence
+Requires ≥ 0.90 confidence
 
-Tracks bounding box position
+Tracks bounding box movement
 
-Saves snapshot only if car moves significantly
+Saves snapshot only when:
 
-Prevents duplicate stationary captures
+Car moves significantly
 
-🧠 Smart Features
+OR a new high-confidence car appears
 
-Movement-based triggering
+Prevents stationary vehicle spam
 
-Confidence filtering
+📂 Snapshot Storage
 
-Object ID approximation
+Snapshots are saved to:
 
-Automatic cleanup of old images
+/home/leddy/snapshots
+/home/leddy/snapshots_cars
+🧹 Automatic Folder Management
 
-Low CPU overhead
+Maximum folder size: 1000 MB
 
-Optimised for long-term unattended running
+Automatically trims down to: 700 MB
 
-📋 Requirements
+Deletes oldest files first
+
+Designed for long-term 24/7 operation
+
+No manual maintenance required.
+
+🚀 Installation & Running
+1️⃣ Activate Hailo Environment
+source /home/leddy/hailo-rpi5-examples/setup_env.sh
+2️⃣ Run the Launcher
+python launcher.py --source "rtsp://YOUR_CAMERA_URL"
+Example
+python launcher.py --source "rtsp://192.168.1.50:554/stream"
+⚙️ Hardware & Software Requirements
+Hardware
 
 Raspberry Pi 5
 
-Hailo AI accelerator
+Hailo8 AI Accelerator
+
+RTSP IP Camera
+
+Software
 
 HailoRT installed
 
@@ -111,14 +135,61 @@ hailo-rpi5-examples installed
 
 Python 3.9+
 
+🧩 Smart Design Features
+
+Movement-based triggering
+
+Cooldown duplicate protection
+
+Confidence filtering
+
+Object ID approximation via bounding box tracking
+
+Automatic disk management
+
+Designed for unattended 24/7 edge deployment
+
+Clean two-layer modular structure
+
 🛠 Designed For
 
 Driveway monitoring
 
-Car detection
+Car movement tracking
 
-People detection
+People detection systems
 
-Lightweight edge AI deployments
+Lightweight security setups
 
-Standalone snapshot systems
+Edge AI experimentation
+
+Standalone snapshot deployments
+
+📌 Project Structure
+bob-eyes-hailo8-snapshot-system/
+│
+├── launcher.py
+├── car_person_detector.py
+├── requirements.txt
+└── README.md
+🔒 Notes
+
+This project relies on the Hailo SDK and Hailo RPi example framework.
+
+Hailo components are system-installed and not included in requirements.txt.
+
+Designed specifically for Hailo8 hardware acceleration.
+
+🧠 Future Expansion
+
+This system can easily be extended with:
+
+GUI monitoring interface
+
+Full object archive mode
+
+Real-time detection dashboard
+
+Systemd auto-start service
+
+Web control panel
