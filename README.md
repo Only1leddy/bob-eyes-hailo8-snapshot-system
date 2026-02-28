@@ -29,7 +29,7 @@ This project runs in two layers:
 - Handles cooldown logic  
 - Entry point for system  
 
-### 2️⃣ `car_person_detector.py`
+### 2️⃣ `bob_eyes_v1.1.py`
 
 - Runs GStreamer inference  
 - Uses Hailo detection framework  
